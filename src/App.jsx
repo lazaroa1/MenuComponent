@@ -1,21 +1,30 @@
 import MenuComponent from "./menuComponent";
 import "./App.css";
+import { useState } from "react";
 
 const MENU_ITEM = [
   {
     id: 1,
-    description: "Link da avaliação",
+    description: "Nome do botão",
     subMenu: [
-      { id: 2, description: "Enviar por email" },
-      { id: 3, description: "Enviar por WhatsApp" },
+      {
+        id: 2,
+        subMenu: [
+          { id: 3, description: "Enviar por email" },
+          { id: 4, description: "Enviar por WhatsApp" },
+        ],
+      },
     ],
   },
 ];
 
 function App() {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <div className="container">
-      <MenuComponent menuItem={MENU_ITEM} />
+      <button onClick={() => setIsOpen(!isOpen)}>botao</button>
+      {isOpen && <MenuComponent menuItem={MENU_ITEM} />}
     </div>
   );
 }
