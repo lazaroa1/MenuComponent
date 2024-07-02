@@ -1,6 +1,23 @@
 import { useEffect, useMemo, useState } from "react";
 import "./index.css";
 
+const MenuItem = ({ item, onToggle }) => {
+  return (
+    <div>
+      <button className="menu-item" onClick={() => onToggle(item)}>
+        {item.description}
+      </button>
+      {item.isOpen && item.subMenu && (
+        <div className="submenu">
+          {item.subMenu.map((subItem) => (
+            <MenuItem key={subItem.id} item={subItem} onToggle={onToggle} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
 export default function MenuComponent({ menuItem = [] }) {
   const [_menuItem, setMenuItem] = useState([]);
 
@@ -31,10 +48,8 @@ export default function MenuComponent({ menuItem = [] }) {
         if (!!item.subMenu) {
           return { ...item, subMenu: updateIsOpenRecursively(item.subMenu) };
         }
-
         return item;
       });
-
       return updateIsData;
     };
 
@@ -44,40 +59,25 @@ export default function MenuComponent({ menuItem = [] }) {
   const initializedMenuItems = useMemo(() => addIsOpen(menuItem), [menuItem]);
 
   useEffect(() => {
-    if (!_menuItem.length) {
+    if (!_menuItem?.length) {
       const dataWithIsOpen = addIsOpen(menuItem);
       setMenuItem(dataWithIsOpen);
     }
-  }, [_menuItem, initializedMenuItems]);
+  }, [initializedMenuItems]);
 
   function handleSubMenu(item) {
     if (!!item?.subMenu) {
-      setMenuItem(updateIsOpen(_menuItem, item.id));
-      return;
+      updateIsOpen(_menuItem, item.id);
+    } else {
+      alert("Item sem submenu");
     }
-    return alert("Item sem submenu");
   }
 
   return (
     <div className="container">
       <div className="menu-dropdown">
-        {_menuItem.map((item) => (
-          <div key={item.id}>
-            <button className="menu-item" onClick={() => handleSubMenu(item)}>
-              {item.description}
-            </button>
-            {item.isOpen && item.subMenu && (
-              <div className="submenu">
-                {item.subMenu.map((subItem) => (
-                  <div key={subItem.id} className="submenu-item">
-                    <button onClick={() => handleSubMenu(subItem)}>
-                      {subItem.description || `Submenu ${subItem.id}`}
-                    </button>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+        {_menuItem?.map((item) => (
+          <MenuItem key={item.id} item={item} onToggle={handleSubMenu} />
         ))}
       </div>
     </div>
