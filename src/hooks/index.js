@@ -33,30 +33,14 @@ export const updateIsOpen = (data, id) => {
   return updateIsData;
 };
 
-export const handleSubMenu = (item) => {
-  if (!!item?.subMenu) {
-    toggleIsOpen(item.id);
-  } else {
-    alert("Item sem submenu");
-  }
-};
-
 export const hasSubMenuWithSubMenu = (subMenu) => {
   return subMenu.some((item) => item.subMenu && item.subMenu.length > 0);
 };
 
-function toggleIsOpen(id) {
-  setMenuItem((prevState) => updateIsOpen(prevState, id));
-}
-
-function closeAllSubMenus(items) {
+const closeAllSubMenus = (items) => {
   return items?.map((item) => ({
     ...item,
     isOpen: false,
     subMenu: closeAllSubMenus(item.subMenu),
   }));
-}
-
-function hasSubMenuWithSubMenu(subMenu) {
-  return subMenu.some((item) => item.subMenu && item.subMenu.length > 0);
-}
+};

@@ -1,6 +1,6 @@
-import MenuComponent from "./menuComponent";
-import "./App.css";
 import { useState } from "react";
+import { MenuComponent } from "./components/menuComponent";
+import "./App.css";
 
 const MENU_ITEM = [
   {
@@ -27,7 +27,7 @@ function App() {
       <button onClick={() => setIsOpen(!isOpen)}>
         Chamando o menu component
       </button>
-      {isOpen && <MenuComponent menuItem={MENU_ITEM} />}
+      {isOpen && <MenuComponent menuOptions={MENU_ITEM} />}
     </div>
   );
 }

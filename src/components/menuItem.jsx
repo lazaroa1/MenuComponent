@@ -1,4 +1,7 @@
-export const MenuItem = ({ item, onToggle, hasSubMenuWithSubMenu }) => {
+import { hasSubMenuWithSubMenu } from "../hooks";
+import "./menuItem.css";
+
+export const MenuItem = ({ item, onToggle }) => {
   const hasSubMenu = item.subMenu && !!item.subMenu.length;
   const isSideMenu = hasSubMenu && hasSubMenuWithSubMenu(item.subMenu);
 
@@ -13,12 +16,7 @@ export const MenuItem = ({ item, onToggle, hasSubMenuWithSubMenu }) => {
           className={`submenu ${isSideMenu ? "submenu-side" : "submenu-below"}`}
         >
           {item.subMenu.map((subItem) => (
-            <MenuItem
-              key={subItem.id}
-              item={subItem}
-              onToggle={onToggle}
-              hasSubMenuWithSubMenu={hasSubMenuWithSubMenu}
-            />
+            <MenuItem key={subItem.id} item={subItem} onToggle={onToggle} />
           ))}
         </div>
       )}
